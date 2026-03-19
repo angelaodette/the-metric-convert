@@ -1,0 +1,29 @@
+/* Swagger UI light branding for The Metric Convert */
+
+.topbar {
+  background-color: #0f172a; /* slate-900 */
+  border-bottom: 1px solid #1e293b; /* slate-800 */
+}
+
+.topbar a,
+.topbar .download-url-wrapper .download-url-button {
+  color: #e2e8f0 !important; /* slate-200 */
+}
+
+.swagger-ui .info .title {
+  color: #0f172a;
+}
+
+.swagger-ui .info .title small {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.swagger-ui .opblock.opblock-post {
+  border-color: #2563eb; /* blue-600 */
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+  background: #2563eb;
+}
+

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Metric Convert — Brand Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #B82020;
+    --deep-red: #7A0C0C;
+    --midnight: #1A1A2E;
+    --spark: #EF9F27;
+    --chalk: #F5F0EB;
+    --white: #FFFFFF;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'Instrument Serif', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--chalk);
+    color: var(--midnight);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Cover */
+  .cover {
+    background: var(--midnight);
+    color: var(--chalk);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cover-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .cover-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--crimson);
+    margin-bottom: 24px;
+  }
+  .cover-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--spark);
+    margin-bottom: 12px;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.92;
+    color: var(--chalk);
+    margin-bottom: 8px;
+  }
+  .cover-title span { color: var(--crimson); }
+  .cover-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 22px;
+    color: rgba(245,240,235,0.55);
+    margin-bottom: 48px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    border-top: 0.5px solid rgba(245,240,235,0.15);
+    padding-top: 24px;
+  }
+  .cover-meta-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,235,0.4);
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-size: 13px;
+    color: var(--chalk);
+  }
+
+  /* Sections */
+  .section {
+    padding: 80px 60px;
+    border-bottom: 0.5px solid rgba(26,26,46,0.12);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-alt { background: var(--white); }
+  .section-dark { background: var(--midnight); color: var(--chalk); }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 8px;
+  }
+  .section-dark .section-label { color: var(--spark); }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 48px;
+    color: var(--midnight);
+  }
+  .section-dark .section-title { color: var(--chalk); }
+
+  /* Color palette */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .color-card {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 0.5px solid rgba(26,26,46,0.1);
+  }
+  .color-swatch {
+    height: 120px;
+  }
+  .color-info {
+    background: var(--white);
+    padding: 12px 14px;
+  }
+  .color-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--midnight);
+    margin-bottom: 2px;
+  }
+  .color-hex {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #888;
+  }
+  .color-role {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* Pairings */
+  .pairing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 0;
+  }
+  .pairing-card {
+    border-radius: 8px;
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pairing-label {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 0.02em;
+  }
+  .pairing-desc {
+    font-size: 11px;
+    opacity: 0.6;
+    text-align: right;
+    max-width: 120px;
+    line-height: 1.4;
+  }
+
+  /* Typography */
+  .type-samples { display: flex; flex-direction: column; gap: 40px; }
+  .type-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    align-items: start;
+    padding-bottom: 40px;
+    border-bottom: 0.5px solid rgba(26,26,46,0.08);
+  }
+  .type-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .type-meta { padding-top: 6px; }
+  .type-meta-name { font-size: 12px; font-weight: 500; color: var(--midnight); margin-bottom: 4px; }
+  .type-meta-detail { font-size: 11px; color: #999; line-height: 1.6; }
+  .type-display {
+    font-family: var(--font-display);
+    font-size: 80px;
+    line-height: 0.9;
+    color: var(--midnight);
+  }
+  .type-serif-display {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 48px;
+    line-height: 1.1;
+    color: var(--midnight);
+  }
+  .type-heading {
+    font-family: var(--font-display);
+    font-size: 36px;
+    color: var(--midnight);
+  }
+  .type-body-sample {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--midnight);
+    max-width: 500px;
+  }
+  .type-label-sample {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+
+  /* Logo */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .logo-card {
+    border-radius: 8px;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 0.5px solid rgba(26,26,46,0.1);
+  }
+  .logo-lockup-display {
+    font-family: var(--font-display);
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .logo-lockup-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+  .logo-note {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    opacity: 0.4;
+  }
+
+  /* Voice */
+  .voice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .voice-card {
+    border-radius: 8px;
+    padding: 24px;
+    background: var(--white);
+    border: 0.5px solid rgba(26,26,46,0.08);
+  }
+  .voice-heading {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--crimson);
+    margin-bottom: 12px;
+  }
+  .voice-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .voice-list li {
+    font-size: 13px;
+    color: #555;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .voice-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--crimson);
+    font-size: 11px;
+  }
+
+  .tagline-box {
+    background: var(--crimson);
+    border-radius: 8px;
+    padding: 40px 48px;
+    margin-top: 32px;
+  }
+  .tagline-box .tag-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,240,235,0.5);
+    margin-bottom: 16px;
+  }
+  .tagline-options { display: flex; flex-direction: column; gap: 12px; }
+  .tagline-option {
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--chalk);
+    line-height: 1;
+  }
+  .tagline-option.secondary {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 22px;
+    color: rgba(245,240,235,0.6);
+  }
+
+  /* Usage dos/donts */
+  .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .usage-col h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .usage-col.do h3 { color: #2d7a3a; }
+  .usage-col.dont h3 { color: var(--crimson); }
+  .usage-item {
+    font-size: 13px;
+    color: #555;
+    padding: 10px 14px 10px 28px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .usage-col.do .usage-item { background: #edf7ef; }
+  .usage-col.dont .usage-item { background: #fdf0f0; }
+  .usage-item::before {
+    position: absolute;
+    left: 10px;
+    font-size: 12px;
+    top: 11px;
+  }
+  .usage-col.do .usage-item::before { content: '✓'; color: #2d7a3a; }
+  .usage-col.dont .usage-item::before { content: '✕'; color: var(--crimson); }
+
+  @media (max-width: 700px) {
+    .cover { padding: 40px 28px; }
+    .section { padding: 60px 28px; }
+    .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    .pairing-grid, .logo-grid, .voice-grid, .usage-grid, .type-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg">
+    <div class="cover-bg-circle" style="width:600px;height:600px;background:var(--crimson);top:-200px;right:-200px;"></div>
+    <div class="cover-bg-circle" style="width:300px;height:300px;background:var(--spark);bottom:-100px;left:-80px;"></div>
+  </div>
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Brand Style Guide · 2026</div>
+  <div class="cover-title">The<br>Metric<br><span>Convert</span></div>
+  <div class="cover-sub">Teaching the world's system to America</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <label>Mission</label>
+      <span>Make metric click for Americans</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Audience</label>
+      <span>Everyone raised on imperial</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Tone</label>
+      <span>Smart, witty, bold</span>
+    </div>
+  </div>
+</div>
+
+<!-- COLORS -->
+<div class="section">
+  <div class="section-label">01 — Colors</div>
+  <div class="section-title">Color Palette</div>
+  <div class="palette-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#B82020;"></div>
+      <div class="color-info">
+        <div class="color-name">Crimson</div>
+        <div class="color-hex">#B82020</div>
+        <div class="color-role">Primary brand color</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#7A0C0C;"></div>
+      <div class="color-info">
+        <div class="color-name">Deep Red</div>
+        <div class="color-hex">#7A0C0C</div>
+        <div class="color-role">Depth & contrast</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#1A1A2E;"></div>
+      <div class="color-info">
+        <div class="color-name">Midnight</div>
+        <div class="color-hex">#1A1A2E</div>
+        <div class="color-role">Backgrounds & text</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#EF9F27;"></div>
+      <div class="color-info">
+        <div class="color-name">Spark</div>
+        <div class="color-hex">#EF9F27</div>
+        <div class="color-role">Accent & highlights</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#F5F0EB; border-bottom: 0.5px solid #ddd;"></div>
+      <div class="color-info">
+        <div class="color-name">Chalk</div>
+        <div class="color-hex">#F5F0EB</div>
+        <div class="color-role">Page backgrounds</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 16px;">Recommended pairings</div>
+    <div class="pairing-grid">
+      <div class="pairing-card" style="background:var(--midnight); color:var(--crimson);">
+        <div class="pairing-label">Midnight + Crimson</div>
+        <div class="pairing-desc" style="color:rgba(245,240,235,0.4);">Headers on dark backgrounds</div>
+      </div>
+      <div class="pairing-card" style="background:var(--crimson); color:var(--chalk);">
+        <div class="pairing-label">Crimson + Chalk</div>
+        <div class="pairing-desc" style="color:rgba(245,240,235,0.55);">CTAs and hero sections</div>
+      </div>
+      <div class="pairing-card" style="background:var(--chalk); color:var(--deep-red); border: 0.5px solid rgba(26,26,46,0.1);">
+        <div class="pairing-label">Chalk + Deep Red</div>
+        <div class="pairing-desc" style="color:rgba(122,12,12,0.5);">Body content areas</div>
+      </div>
+      <div class="pairing-card" style="background:var(--midnight); color:var(--spark);">
+        <div class="pairing-label">Midnight + Spark</div>
+        <div class="pairing-desc" style="color:rgba(245,240,235,0.4);">Labels & callouts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section section-alt">
+  <div class="section-label">02 — Typography</div>
+  <div class="section-title">Type System</div>
+  <div class="type-samples">
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="type-meta-name">Bebas Neue</div>
+        <div class="type-meta-detail">Display / Headlines<br>All caps, 0.02em tracking<br>Use for big statements</div>
+      </div>
+      <div class="type-display">1 KM =<br>0.62 MI</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="type-meta-name">Instrument Serif Italic</div>
+        <div class="type-meta-detail">Subheadings / Quotes<br>Italic, natural size<br>Use for warmth & wit</div>
+      </div>
+      <div class="type-serif-display">"Finally, the system that just makes sense."</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="type-meta-name">DM Sans 500</div>
+        <div class="type-meta-detail">Section headings<br>Medium weight<br>Clean & confident</div>
+      </div>
+      <div class="type-heading">Why Metric Wins</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="type-meta-name">DM Sans 400</div>
+        <div class="type-meta-detail">Body copy<br>16px / 1.7 line-height<br>Readable at any age</div>
+      </div>
+      <div class="type-body-sample">Water freezes at 0°C, not 32°F. Your body temperature is 37°C, not 98.6°F. Once you stop converting and start feeling, metric stops being foreign — it becomes obvious.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="type-meta-name">DM Sans 400</div>
+        <div class="type-meta-detail">Labels & eyebrows<br>11px / 0.14em tracking<br>Uppercase only</div>
+      </div>
+      <div class="type-label-sample">Unit Conversion · Temperature · Distance</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGO -->
+<div class="section">
+  <div class="section-label">03 — Logo</div>
+  <div class="section-title">Logo Lockups</div>
+  <div class="logo-grid">
+    <div class="logo-card" style="background:var(--midnight);">
+      <div class="logo-lockup-display" style="color:var(--chalk);">THE METRIC</div>
+      <div class="logo-lockup-display" style="color:var(--crimson);">CONVERT</div>
+      <div class="logo-lockup-serif" style="color:rgba(245,240,235,0.4);">Imperial to metric, made simple</div>
+      <div class="logo-note" style="color:rgba(245,240,235,0.3);">Primary — dark backgrounds</div>
+    </div>
+    <div class="logo-card" style="background:var(--chalk);">
+      <div class="logo-lockup-display" style="color:var(--midnight);">THE METRIC</div>
+      <div class="logo-lockup-display" style="color:var(--crimson);">CONVERT</div>
+      <div class="logo-lockup-serif" style="color:#999;">Imperial to metric, made simple</div>
+      <div class="logo-note">Primary — light backgrounds</div>
+    </div>
+    <div class="logo-card" style="background:var(--crimson);">
+      <div class="logo-lockup-display" style="color:var(--chalk);">THE METRIC<br>CONVERT</div>
+      <div class="logo-lockup-serif" style="color:rgba(245,240,235,0.6);">Imperial to metric, made simple</div>
+      <div class="logo-note" style="color:rgba(245,240,235,0.4);">Accent / campaign use</div>
+    </div>
+  </div>
+</div>
+
+<!-- VOICE -->
+<div class="section section-dark">
+  <div class="section-label">04 — Voice & Tone</div>
+  <div class="section-title">Brand Voice</div>
+  <div class="voice-grid">
+    <div class="voice-card">
+      <div class="voice-heading">Smart</div>
+      <ul class="voice-list">
+        <li>Explain the "why" behind metric, not just the "how"</li>
+        <li>Use real-world context — body temp, weather, cooking</li>
+        <li>Respect the reader's intelligence; don't talk down</li>
+        <li>Cite facts confidently without being preachy</li>
+      </ul>
+    </div>
+    <div class="voice-card">
+      <div class="voice-heading">Witty</div>
+      <ul class="voice-list">
+        <li>Embrace the absurdity of Fahrenheit and feet</li>
+        <li>Light jokes are welcome — condescension is not</li>
+        <li>Wordplay earns its place when it also teaches</li>
+        <li>Self-aware: we were all confused once too</li>
+      </ul>
+    </div>
+    <div class="voice-card">
+      <div class="voice-heading">Bold</div>
+      <ul class="voice-list">
+        <li>Make strong, clear claims — no mealy-mouthed hedging</li>
+        <li>Short sentences. Active voice. No filler.</li>
+        <li>Lead with the punchline, explain after</li>
+        <li>Make metric feel inevitable, not optional</li>
+      </ul>
+    </div>
+    <div class="voice-card">
+      <div class="voice-heading">Welcoming</div>
+      <ul class="voice-list">
+        <li>Never shame imperial users — we're converting them, not judging</li>
+        <li>"You" not "one" — personal and direct</li>
+        <li>Celebrate small wins (you just thought in km!)</li>
+        <li>Meet people where they are, take them somewhere better</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tagline-box">
+    <div class="tag-label">Tagline candidates</div>
+    <div class="tagline-options">
+      <div class="tagline-option">Finally, the system that makes sense.</div>
+      <div class="tagline-option">From inches to insight.</div>
+      <div class="tagline-option secondary">Because the rest of the world already knows.</div>
+      <div class="tagline-option secondary">One conversion. Zero going back.</div>
+    </div>
+  </div>
+</div>
+
+<!-- USAGE -->
+<div class="section">
+  <div class="section-label">05 — Usage</div>
+  <div class="section-title">Do's & Don'ts</div>
+  <div class="usage-grid">
+    <div class="usage-col do">
+      <h3>Do</h3>
+      <div class="usage-item">Use Bebas Neue for all display headlines and unit callouts</div>
+      <div class="usage-item">Pair Crimson with Chalk or Midnight for high contrast</div>
+      <div class="usage-item">Use Spark amber sparingly — labels, badges, and key stats only</div>
+      <div class="usage-item">Write in active voice with short, punchy sentences</div>
+      <div class="usage-item">Use Instrument Serif italic for quotes, taglines, and warmth moments</div>
+      <div class="usage-item">Let metric numbers be the hero — big, bold, centered</div>
+    </div>
+    <div class="usage-col dont">
+      <h3>Don't</h3>
+      <div class="usage-item">Don't use generic fonts like Inter, Roboto, or Arial</div>
+      <div class="usage-item">Don't use Deep Red (#7A0C0C) as a text color on dark backgrounds</div>
+      <div class="usage-item">Don't stack more than 2 colors in a single UI component</div>
+      <div class="usage-item">Don't use Spark as a primary color — it's an accent only</div>
+      <div class="usage-item">Don't mock or shame imperial users in copy</div>
+      <div class="usage-item">Don't use gradients — flat colors only, per brand identity</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

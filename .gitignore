@@ -1,0 +1,29 @@
+# Backend (.NET)
+backend/**/bin/
+backend/**/obj/
+backend/**/out/
+*.user
+*.swp
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Frontend (Angular/Node)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDE/editor
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+

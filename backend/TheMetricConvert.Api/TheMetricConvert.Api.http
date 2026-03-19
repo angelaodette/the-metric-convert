@@ -1,0 +1,6 @@
+@TheMetricConvert.Api_HostAddress = http://localhost:5226
+
+GET {{TheMetricConvert.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
