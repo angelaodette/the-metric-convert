@@ -32,11 +32,26 @@
 }
 
 .logo-dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 9999px;
-  background: conic-gradient(from 180deg, #2563eb, #7c3aed, #f97316, #2563eb);
-  box-shadow: 0 0 0 2px #e5e7eb;
+  display: none;
+}
+
+.shell__logo {
+  width: 58px;
+  height: auto;
+  display: block;
+}
+
+.homepage-logo-wrap {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.home-logo {
+  max-width: 360px;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 20px rgba(15, 23, 42, 0.15);
 }
 
 .shell__brand h1 {
