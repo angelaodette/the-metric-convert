@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, ConvertRequest, ConvertResult, UnitDefinition } from './api.service';
 
+type Theme = 'light' | 'dark';
+
 @Component({
   selector: 'tmc-converter',
   standalone: true,
@@ -25,6 +27,8 @@ export class ConverterComponent implements OnInit {
   value = signal<number>(1);
 
   readonly result = signal<ConvertResult | null>(null);
+  
+  readonly theme = signal<Theme>(this.getTheme());
 
   readonly metricUnits = computed(() =>
     this.units().filter(u => u.system === 'Metric')
@@ -42,10 +46,24 @@ export class ConverterComponent implements OnInit {
         console.error('Converter error:', this.error());
       }
     });
+    
+    // Watch for theme changes on root element
+    const observer = new MutationObserver(() => {
+      const newTheme = document.documentElement.getAttribute('data-theme') as Theme;
+      if (newTheme && newTheme !== this.theme()) {
+        this.theme.set(newTheme);
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   }
 
   ngOnInit(): void {
     this.fetchUnits();
+  }
+  
+  private getTheme(): Theme {
+    const theme = document.documentElement.getAttribute('data-theme');
+    return (theme === 'light' || theme === 'dark') ? theme : 'dark';
   }
 
   fetchUnits(): void {

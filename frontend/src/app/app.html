@@ -1,23 +1,33 @@
-<main class="shell">
+<main class="shell" [attr.data-theme]="theme()">
   <header class="shell__header">
     <div class="shell__brand">
-      <img class="shell__logo navbar-logo" src="assets/navbar-dark.svg" alt="The Metric Convert logo" />
+      <img 
+        class="shell__logo navbar-logo" 
+        [src]="theme() === 'dark' ? 'assets/navbar-dark.svg' : 'assets/navbar-light.svg'" 
+        alt="The Metric Convert logo" 
+      />
       <div>
         <h1>The Metric Convert</h1>
         <p>Practice metric conversions with clear, step-by-step explanations.</p>
       </div>
     </div>
     <nav class="shell__nav">
-      <!-- TODO: Replace hard-coded labels with i18n-friendly tokens once translations are needed. -->
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         Converter
       </a>
-      <a routerLink="/learn" routerLinkActive="active">
-        Learn
+      <a routerLink="/lessons" routerLinkActive="active">
+        Lessons
       </a>
-      <a href="http://localhost:5080/swagger" target="_blank" rel="noopener">
-        API docs
+      <a routerLink="/units" routerLinkActive="active">
+        Units
       </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        Profile
+      </a>
+      <button class="shell__theme-toggle" (click)="toggleTheme()" [attr.aria-label]="theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+        <span class="theme-icon" *ngIf="theme() === 'dark'">☀️</span>
+        <span class="theme-icon" *ngIf="theme() === 'light'">🌙</span>
+      </button>
     </nav>
   </header>
 

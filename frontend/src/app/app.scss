@@ -9,6 +9,52 @@
   display: block;
 }
 
+/* Dark mode theme */
+[data-theme="dark"] {
+  :host {
+    color: #f5f5f5;
+    background: radial-gradient(circle at top, #1a1a2e, #0f0f1e);
+  }
+
+  .shell {
+    color: #f5f5f5;
+  }
+
+  .shell__brand h1 {
+    color: #f5f5f5;
+  }
+
+  .shell__brand p {
+    color: #b0b0b0;
+  }
+
+  .shell__nav a {
+    color: #c0c0c0;
+  }
+
+  .shell__nav a:hover {
+    background: #333333;
+  }
+
+  .shell__nav a.active {
+    background: #f5f0eb;
+    color: #1a1a2e;
+  }
+
+  .shell__body {
+    background: rgba(30, 30, 45, 0.9);
+    border-color: #333333;
+    color: #f5f5f5;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(80, 80, 100, 0.3);
+  }
+
+  .shell__theme-toggle:hover {
+    background: #333333;
+  }
+}
+
 .shell {
   max-width: 960px;
   margin: 0 auto;
@@ -79,6 +125,7 @@
   padding: 0.35rem 0.9rem;
   border-radius: 9999px;
   border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .shell__nav a:hover {
@@ -89,6 +136,28 @@
   background: #111827;
   color: white;
   border-color: #111827;
+}
+
+.shell__theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shell__theme-toggle:hover {
+  background: #e5e7eb;
+}
+
+.theme-icon {
+  display: inline-block;
+  line-height: 1;
 }
 
 .shell__body {
