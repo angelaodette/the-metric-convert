@@ -1,0 +1,92 @@
+<section class="converter">
+  <header class="converter__header">
+    <h2>Interactive Metric Converter</h2>
+    <p>
+      Practice moving between everyday imperial units and their metric equivalents.
+      The steps below the result explain what is happening mathematically.
+    </p>
+  </header>
+
+  <form class="converter__form" (ngSubmit)="submit()">
+    <div class="converter__row">
+      <label>
+        <span>Value</span>
+        <input
+          type="number"
+          name="value"
+          [(ngModel)]="value()"
+          (ngModelChange)="value.set($event)"
+          required
+        />
+      </label>
+
+      <label>
+        <span>From</span>
+        <select
+          name="from"
+          [(ngModel)]="fromUnit()"
+          (ngModelChange)="fromUnit.set($event)"
+          required
+        >
+          <option *ngFor="let u of units(); trackBy: trackBySymbol" [value]="u.symbol">
+            {{ u.symbol }} — {{ u.name }} ({{ u.system }})
+          </option>
+        </select>
+      </label>
+
+      <label>
+        <span>To</span>
+        <select
+          name="to"
+          [(ngModel)]="toUnit()"
+          (ngModelChange)="toUnit.set($event)"
+          required
+        >
+          <option *ngFor="let u of units(); trackBy: trackBySymbol" [value]="u.symbol">
+            {{ u.symbol }} — {{ u.name }} ({{ u.system }})
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div class="converter__actions">
+      <button type="submit" [disabled]="loadingConvert() || loadingUnits()">
+        {{ loadingConvert() ? 'Converting…' : 'Convert' }}
+      </button>
+      <button type="button" class="link" (click)="fetchUnits()" [disabled]="loadingUnits()">
+        {{ loadingUnits() ? 'Refreshing units…' : 'Reload units' }}
+      </button>
+    </div>
+
+    <p class="converter__hint">
+      Tip: try converting between metric prefixes first (e.g. millimeters → centimeters → meters) to build an intuition for powers of ten.
+    </p>
+  </form>
+
+  <section class="converter__feedback" *ngIf="error() || result()">
+    <article class="error" *ngIf="error()">
+      {{ error() }}
+    </article>
+
+    <article class="result" *ngIf="result() as r">
+      <h3>Result</h3>
+      <p *ngIf="r.outputValue !== null && r.outputUnit">
+        <strong>{{ r.outputValue | number: '1.2-4' }} {{ r.outputUnit }}</strong>
+      </p>
+
+      <section class="steps" *ngIf="r.steps?.length">
+        <h4>How the conversion works</h4>
+        <ol>
+          <li *ngFor="let step of r.steps">
+            {{ step }}
+          </li>
+        </ol>
+      </section>
+
+      <p class="tip" *ngIf="r.tip">
+        {{ r.tip }}
+      </p>
+    </article>
+  </section>
+</section>
+
