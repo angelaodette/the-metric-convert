@@ -1,7 +1,7 @@
-using TheMetricConvert.Api;
 using System.Reflection;
-using Microsoft.OpenApi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using TheMetricConvert.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +10,10 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 
 // Add PostgreSQL database context
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? "Host=localhost;Port=5432;Database=metric_convert;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString)
-);
+    options.UseNpgsql(connectionString));
 
 // Add authentication service
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -25,7 +24,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "The Metric Convert API",
         Version = "v1",
-        Description = "Learning-friendly metric conversions with user authentication (units catalog + step-by-step conversions)."
+        Description = "Learning-friendly metric conversions with user authentication (units catalog + step-by-step conversions).",
     });
 
     // Pull XML doc comments into Swagger descriptions.
@@ -100,7 +99,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 // ====== Utility Endpoints ======
-
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }))
     .WithName("Healthz")
     .WithTags("Utility")
@@ -109,7 +107,6 @@ app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }))
     .Produces(StatusCodes.Status200OK);
 
 // ====== Auth Endpoints ======
-
 app.MapPost("/api/auth/register", async (IAuthService authService, RegisterRequest request) =>
     {
         try
@@ -125,7 +122,7 @@ app.MapPost("/api/auth/register", async (IAuthService authService, RegisterReque
         {
             return Results.BadRequest(new ErrorResponse { Message = ex.Message, Code = "USER_EXISTS" });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return Results.StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -149,11 +146,11 @@ app.MapPost("/api/auth/login", async (IAuthService authService, LoginRequest req
         {
             return Results.BadRequest(new ErrorResponse { Message = ex.Message, Code = "INVALID_INPUT" });
         }
-        catch (UnauthorizedAccessException ex)
+        catch (UnauthorizedAccessException)
         {
             return Results.Unauthorized();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return Results.StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -177,7 +174,7 @@ app.MapPost("/api/auth/refresh", async (IAuthService authService, RefreshTokenRe
         {
             return Results.Unauthorized();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return Results.StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -191,7 +188,6 @@ app.MapPost("/api/auth/refresh", async (IAuthService authService, RefreshTokenRe
     .Produces(StatusCodes.Status401Unauthorized);
 
 // ====== Units Endpoints ======
-
 app.MapGet("/api/units", () => Results.Ok(UnitCatalog.All))
     .WithName("GetUnits")
     .WithTags("Units")
@@ -200,7 +196,6 @@ app.MapGet("/api/units", () => Results.Ok(UnitCatalog.All))
     .Produces<IReadOnlyList<UnitDefinition>>(StatusCodes.Status200OK);
 
 // ====== Conversions Endpoints ======
-
 app.MapPost("/api/conversions", (ConvertRequest request) =>
     {
         // We return a structured result even on errors so the UI can show a friendly message.

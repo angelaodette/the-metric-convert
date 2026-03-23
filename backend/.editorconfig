@@ -1,0 +1,57 @@
+root = true
+
+[*.cs]
+# Core formatting
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# .NET / C# style preferences
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:warning
+
+# ── StyleCop ────────────────────────────────────────────────────────────────
+
+# File headers — not required for this project
+dotnet_diagnostic.SA1633.severity = none
+
+# XML documentation — managed via CS1591 / #pragma warning disable in entity files
+dotnet_diagnostic.SA1600.severity = none   # Elements must be documented
+dotnet_diagnostic.SA1601.severity = none   # Partial elements must be documented
+dotnet_diagnostic.SA1602.severity = none   # Enum items must be documented
+
+# Doc comment formatting — too prescriptive for this project's doc style
+dotnet_diagnostic.SA1623.severity = none   # Property summary must begin with 'Gets or sets'
+dotnet_diagnostic.SA1611.severity = none   # Element parameters must be documented
+dotnet_diagnostic.SA1615.severity = none   # Element return value must be documented
+dotnet_diagnostic.SA1642.severity = none   # Constructor summary must begin with standard text
+
+# File/type organisation — project uses grouped files (Entities.cs, AuthDtos.cs, etc.)
+dotnet_diagnostic.SA1402.severity = none   # File may only contain a single type
+dotnet_diagnostic.SA1649.severity = none   # File name must match first type name
+
+# Allow 'using' directives outside namespace (project convention)
+dotnet_diagnostic.SA1210.severity = none   # Using directives order (handled by IDE)
+
+# Allow trailing commas, var usage, and other common modern C# patterns
+dotnet_diagnostic.SA1101.severity = none   # Prefix local calls with 'this.'
+dotnet_diagnostic.SA1309.severity = none   # Field names must not begin with underscore
+dotnet_diagnostic.SX1309.severity = warning # Field names should begin with underscore (Roslynator convention)
+
+# ── Roslynator ──────────────────────────────────────────────────────────────
+
+# Prefer 'var' when type is obvious
+dotnet_diagnostic.RCS1264.severity = suggestion  # Use 'var' or explicit type
+
+# Async method naming — allow Task-returning methods without 'Async' suffix in some cases
+dotnet_diagnostic.RCS1046.severity = suggestion  # Async method name should end with 'Async'
+
+# Keep these as warnings to catch real issues
+dotnet_diagnostic.RCS1036.severity = warning  # Remove unnecessary blank line
+dotnet_diagnostic.RCS1037.severity = warning  # Remove trailing white-space
+dotnet_diagnostic.RCS1085.severity = warning  # Use auto-implemented property
+dotnet_diagnostic.RCS1138.severity = warning  # Add summary to documentation comment

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace TheMetricConvert.Api;
@@ -10,12 +11,25 @@ namespace TheMetricConvert.Api;
 /// </summary>
 public interface IAuthService
 {
+    /// <summary>Hashes a plain-text password.</summary>
     string HashPassword(string password);
+
+    /// <summary>Verifies a plain-text password against a stored hash.</summary>
     bool VerifyPassword(string password, string hash);
+
+    /// <summary>Generates a short-lived JWT access token for the given user.</summary>
     string GenerateAccessToken(User user);
+
+    /// <summary>Generates a cryptographically random refresh token.</summary>
     string GenerateRefreshToken();
+
+    /// <summary>Registers a new user and returns auth tokens.</summary>
     Task<AuthResponse> RegisterAsync(RegisterRequest request);
+
+    /// <summary>Authenticates a user by email/password and returns auth tokens.</summary>
     Task<AuthResponse> LoginAsync(LoginRequest request);
+
+    /// <summary>Exchanges a valid refresh token for a new access token.</summary>
     Task<AuthResponse> RefreshAccessTokenAsync(string refreshToken);
 }
 
@@ -28,7 +42,11 @@ public class AuthService : IAuthService
     private readonly IConfiguration _config;
     private readonly ILogger<AuthService> _logger;
 
-    public AuthService(AppDbContext context, IConfiguration config, ILogger<AuthService> logger)
+    /// <summary>Initializes the auth service with its dependencies.</summary>
+    public AuthService(
+        AppDbContext context,
+        IConfiguration config,
+        ILogger<AuthService> logger)
     {
         _context = context;
         _config = config;
@@ -70,7 +88,7 @@ public class AuthService : IAuthService
         {
             new System.Security.Claims.Claim("sub", user.Id.ToString()),
             new System.Security.Claims.Claim("email", user.Email),
-            new System.Security.Claims.Claim("email_verified", user.EmailVerified.ToString().ToLower())
+            new System.Security.Claims.Claim("email_verified", user.EmailVerified.ToString().ToLower()),
         };
 
         // Add roles
@@ -84,8 +102,7 @@ public class AuthService : IAuthService
             audience: _config["Jwt:Audience"] ?? "TheMetricConvertClients",
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(15), // 15 minute access token
-            signingCredentials: creds
-        );
+            signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
@@ -100,6 +117,7 @@ public class AuthService : IAuthService
         {
             rng.GetBytes(randomNumber);
         }
+
         return Convert.ToBase64String(randomNumber);
     }
 
@@ -115,7 +133,7 @@ public class AuthService : IAuthService
         }
 
         // Check if user already exists
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        var existingUser = await _context.Users.FirstOrDefaultAsync<User>(u => u.Email == request.Email);
         if (existingUser != null)
         {
             throw new InvalidOperationException("User with this email already exists.");
@@ -128,7 +146,7 @@ public class AuthService : IAuthService
             Email = request.Email,
             DisplayName = request.DisplayName ?? request.Email.Split('@')[0],
             IsActive = true,
-            EmailVerified = false
+            EmailVerified = false,
         };
 
         // Hash password and create credential
@@ -137,7 +155,7 @@ public class AuthService : IAuthService
         {
             Id = Guid.NewGuid(),
             UserId = user.Id,
-            PasswordHash = passwordHash
+            PasswordHash = passwordHash,
         };
 
         // Assign default "user" role
@@ -145,7 +163,7 @@ public class AuthService : IAuthService
         {
             Id = Guid.NewGuid(),
             UserId = user.Id,
-            Role = "user"
+            Role = "user",
         };
 
         // Save to database
@@ -164,7 +182,7 @@ public class AuthService : IAuthService
             Id = Guid.NewGuid(),
             UserId = user.Id,
             Token = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(7) // 7 day refresh token
+            ExpiresAt = DateTime.UtcNow.AddDays(7), // 7 day refresh token
         };
         _context.RefreshTokens.Add(refreshTokenEntity);
         await _context.SaveChangesAsync();
@@ -176,7 +194,7 @@ public class AuthService : IAuthService
             DisplayName = user.DisplayName,
             AvatarUrl = user.AvatarUrl,
             EmailVerified = user.EmailVerified,
-            Roles = new List<string> { "user" }
+            Roles = new List<string> { "user" },
         };
 
         return new AuthResponse
@@ -184,7 +202,7 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             User = userDto,
-            ExpiresIn = 900 // 15 minutes in seconds
+            ExpiresIn = 900, // 15 minutes in seconds
         };
     }
 
@@ -197,7 +215,7 @@ public class AuthService : IAuthService
         var user = await _context.Users
             .Include(u => u.Credentials)
             .Include(u => u.Roles)
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
+            .FirstOrDefaultAsync<User>(u => u.Email == request.Email);
 
         if (user == null || !user.IsActive)
         {
@@ -221,7 +239,7 @@ public class AuthService : IAuthService
             Id = Guid.NewGuid(),
             UserId = user.Id,
             Token = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
         };
         _context.RefreshTokens.Add(refreshTokenEntity);
         await _context.SaveChangesAsync();
@@ -233,7 +251,7 @@ public class AuthService : IAuthService
             DisplayName = user.DisplayName,
             AvatarUrl = user.AvatarUrl,
             EmailVerified = user.EmailVerified,
-            Roles = user.Roles.Select(r => r.Role).ToList()
+            Roles = user.Roles.Select(r => r.Role).ToList(),
         };
 
         return new AuthResponse
@@ -241,7 +259,7 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             User = userDto,
-            ExpiresIn = 900
+            ExpiresIn = 900,
         };
     }
 
@@ -253,7 +271,7 @@ public class AuthService : IAuthService
         var refreshTokenEntity = await _context.RefreshTokens
             .Include(rt => rt.User)
             .ThenInclude(u => u!.Roles)
-            .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
+            .FirstOrDefaultAsync<RefreshToken>(rt => rt.Token == refreshToken);
 
         if (refreshTokenEntity == null || refreshTokenEntity.ExpiresAt < DateTime.UtcNow)
         {
@@ -277,7 +295,7 @@ public class AuthService : IAuthService
             Id = Guid.NewGuid(),
             UserId = user.Id,
             Token = newRefreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
         };
 
         _context.RefreshTokens.Update(refreshTokenEntity);
@@ -291,7 +309,7 @@ public class AuthService : IAuthService
             DisplayName = user.DisplayName,
             AvatarUrl = user.AvatarUrl,
             EmailVerified = user.EmailVerified,
-            Roles = user.Roles.Select(r => r.Role).ToList()
+            Roles = user.Roles.Select(r => r.Role).ToList(),
         };
 
         return new AuthResponse
@@ -299,7 +317,7 @@ public class AuthService : IAuthService
             AccessToken = newAccessToken,
             RefreshToken = newRefreshToken,
             User = userDto,
-            ExpiresIn = 900
+            ExpiresIn = 900,
         };
     }
 }

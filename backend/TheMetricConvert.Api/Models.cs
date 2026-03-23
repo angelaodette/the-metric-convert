@@ -7,12 +7,15 @@ public enum UnitCategory
 {
     /// <summary>Distance and size (base: meter).</summary>
     Length,
+
     /// <summary>Weight and mass (base: gram).</summary>
     Mass,
+
     /// <summary>Liquid volume (base: liter).</summary>
     Volume,
+
     /// <summary>Temperature (base: celsius; handled with offsets).</summary>
-    Temperature
+    Temperature,
 }
 
 /// <summary>
@@ -22,10 +25,12 @@ public enum UnitSystem
 {
     /// <summary>Metric system units/prefixes.</summary>
     Metric,
+
     /// <summary>US/Imperial customary units.</summary>
     Imperial,
+
     /// <summary>Other/uncategorized (reserved for future expansion).</summary>
-    Other
+    Other,
 }
 
 /// <summary>
@@ -49,8 +54,7 @@ public sealed record UnitDefinition(
     UnitSystem System,
     double FactorToBase,
     string BaseSymbol,
-    int? PowerOfTen = null
-);
+    int? PowerOfTen = null);
 
 /// <summary>
 /// A conversion request.
@@ -61,8 +65,7 @@ public sealed record UnitDefinition(
 public sealed record ConvertRequest(
     string From,
     string To,
-    double Value
-);
+    double Value);
 
 /// <summary>
 /// Conversion response including educational steps and a learning tip when available.
@@ -74,5 +77,4 @@ public sealed record ConvertResult(
     double? OutputValue,
     string? OutputUnit,
     IReadOnlyList<string> Steps,
-    string? Tip
-);
+    string? Tip);

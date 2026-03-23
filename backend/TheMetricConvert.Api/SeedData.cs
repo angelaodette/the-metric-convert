@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace TheMetricConvert.Api;
 
 /// <summary>
@@ -22,7 +24,7 @@ public static class SeedData
             var adminPassword = config["Seed:AdminPassword"] ?? "AdminPassword123!";
             var adminName = config["Seed:AdminName"] ?? "Admin";
 
-            var existingAdmin = await context.Users.FirstOrDefaultAsync(u => u.Email == adminEmail);
+            var existingAdmin = await context.Users.FirstOrDefaultAsync<User>(u => u.Email == adminEmail);
             if (existingAdmin != null)
             {
                 logger.LogInformation("Admin user already exists, skipping seed.");
@@ -40,7 +42,7 @@ public static class SeedData
                     Email = adminEmail,
                     DisplayName = adminName,
                     IsActive = true,
-                    EmailVerified = true
+                    EmailVerified = true,
                 };
 
                 // Hash password and create credential
@@ -49,7 +51,7 @@ public static class SeedData
                 {
                     Id = Guid.NewGuid(),
                     UserId = adminUser.Id,
-                    PasswordHash = passwordHash
+                    PasswordHash = passwordHash,
                 };
 
                 // Assign admin role
@@ -57,7 +59,7 @@ public static class SeedData
                 {
                     Id = Guid.NewGuid(),
                     UserId = adminUser.Id,
-                    Role = "admin"
+                    Role = "admin",
                 };
 
                 // Save to database

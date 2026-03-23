@@ -10,11 +10,9 @@ namespace TheMetricConvert.Api;
 /// </remarks>
 public static class UnitCatalog
 {
-    // Base units:
-    // - Length: meter (m)
-    // - Mass: gram (g)
-    // - Volume: liter (L)
-    // - Temperature: celsius (C) (handled specially in converter)
+    private static readonly Dictionary<string, UnitDefinition> BySymbol =
+        All!.ToDictionary(u => u.Symbol, StringComparer.OrdinalIgnoreCase);
+
     /// <summary>
     /// All supported units.
     /// </summary>
@@ -53,9 +51,6 @@ public static class UnitCatalog
         new("F", "fahrenheit", UnitCategory.Temperature, UnitSystem.Imperial, 1, "C"),
         new("K", "kelvin", UnitCategory.Temperature, UnitSystem.Metric, 1, "C"),
     };
-
-    private static readonly Dictionary<string, UnitDefinition> BySymbol =
-        All.ToDictionary(u => u.Symbol, StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Looks up a unit by symbol (case-insensitive).

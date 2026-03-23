@@ -1,3 +1,4 @@
+#pragma warning disable CS1591 // Entity properties are documented via Column attributes and class summaries
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,10 +42,15 @@ public class User
 
     // Navigation properties
     public ICollection<UserCredential> Credentials { get; set; } = new List<UserCredential>();
+
     public ICollection<UserRole> Roles { get; set; } = new List<UserRole>();
+
     public ICollection<SocialAuth> SocialAuths { get; set; } = new List<SocialAuth>();
+
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
     public ICollection<AuthSession> Sessions { get; set; } = new List<AuthSession>();
+
     public ICollection<DeviceToken> DeviceTokens { get; set; } = new List<DeviceToken>();
 }
 

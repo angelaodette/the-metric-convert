@@ -27,8 +27,7 @@ public static class UnitConverter
                 OutputValue: null,
                 OutputUnit: null,
                 Steps: Array.Empty<string>(),
-                Tip: null
-            );
+                Tip: null);
         }
 
         if (string.IsNullOrWhiteSpace(request.From) || string.IsNullOrWhiteSpace(request.To))
@@ -86,8 +85,7 @@ public static class UnitConverter
             OutputValue: output,
             OutputUnit: toUnit.Symbol,
             Steps: steps,
-            Tip: tip
-        );
+            Tip: tip);
     }
 
     private static ConvertResult ConvertTemperature(ConvertRequest input, string fromSymbol, string toSymbol)
@@ -104,7 +102,7 @@ public static class UnitConverter
             "C" => v,
             "F" => (v - 32.0) * (5.0 / 9.0),
             "K" => v - 273.15,
-            _ => double.NaN
+            _ => double.NaN,
         };
 
         if (double.IsNaN(celsius))
@@ -120,7 +118,7 @@ public static class UnitConverter
             "C" => celsius,
             "F" => (celsius * (9.0 / 5.0)) + 32.0,
             "K" => celsius + 273.15,
-            _ => double.NaN
+            _ => double.NaN,
         };
 
         if (double.IsNaN(output))
@@ -130,7 +128,7 @@ public static class UnitConverter
 
         steps.Add($"To target ({toSymbol}): {output} {toSymbol}");
 
-        var tip = "Temperature conversions aren’t simple powers of ten because they include an offset (like +32 or +273.15).";
+        var tip = "Temperature conversions aren't simple powers of ten because they include an offset (like +32 or +273.15).";
 
         return new ConvertResult(
             IsOk: true,
@@ -139,8 +137,7 @@ public static class UnitConverter
             OutputValue: output,
             OutputUnit: toSymbol,
             Steps: steps,
-            Tip: tip
-        );
+            Tip: tip);
     }
 
     private static string? BuildPowerOfTenTip(UnitDefinition fromUnit, UnitDefinition toUnit)
@@ -175,7 +172,5 @@ public static class UnitConverter
             OutputValue: null,
             OutputUnit: null,
             Steps: Array.Empty<string>(),
-            Tip: null
-        );
+            Tip: null);
 }
-

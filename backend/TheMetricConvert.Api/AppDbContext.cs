@@ -7,18 +7,34 @@ namespace TheMetricConvert.Api;
 /// </summary>
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    /// <summary>Initializes the database context with the given options.</summary>
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
     {
     }
 
+    /// <summary>Users table.</summary>
     public DbSet<User> Users { get; set; } = null!;
+
+    /// <summary>User password credentials table.</summary>
     public DbSet<UserCredential> UserCredentials { get; set; } = null!;
+
+    /// <summary>User role assignments table.</summary>
     public DbSet<UserRole> UserRoles { get; set; } = null!;
+
+    /// <summary>OAuth/social login credentials table.</summary>
     public DbSet<SocialAuth> SocialAuths { get; set; } = null!;
+
+    /// <summary>JWT refresh tokens table.</summary>
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+
+    /// <summary>Active user sessions table.</summary>
     public DbSet<AuthSession> AuthSessions { get; set; } = null!;
+
+    /// <summary>Device tokens table.</summary>
     public DbSet<DeviceToken> DeviceTokens { get; set; } = null!;
 
+    /// <summary>Configures entity relationships and indexes.</summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -27,7 +43,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique()
-            .HasName("idx_users_email_unique")
+            .HasDatabaseName("idx_users_email_unique")
             .HasFilter("deleted_at IS NULL");
 
         // UserCredentials: one-to-one with User
@@ -54,7 +70,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<SocialAuth>()
             .HasIndex(sa => new { sa.Provider, sa.ProviderUserId })
             .IsUnique()
-            .HasName("idx_social_auths_provider_user_unique");
+            .HasDatabaseName("idx_social_auths_provider_user_unique");
 
         // RefreshTokens: one-to-many with User
         modelBuilder.Entity<RefreshToken>()
@@ -66,7 +82,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<RefreshToken>()
             .HasIndex(rt => rt.Token)
             .IsUnique()
-            .HasName("idx_refresh_tokens_token_unique");
+            .HasDatabaseName("idx_refresh_tokens_token_unique");
 
         // AuthSessions: one-to-many with User
         modelBuilder.Entity<AuthSession>()
@@ -78,7 +94,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<AuthSession>()
             .HasIndex(@as => @as.Token)
             .IsUnique()
-            .HasName("idx_auth_sessions_token_unique");
+            .HasDatabaseName("idx_auth_sessions_token_unique");
 
         // DeviceTokens: one-to-many with User
         modelBuilder.Entity<DeviceToken>()
@@ -90,6 +106,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<DeviceToken>()
             .HasIndex(dt => dt.TokenHash)
             .IsUnique()
-            .HasName("idx_device_tokens_hash_unique");
+            .HasDatabaseName("idx_device_tokens_hash_unique");
     }
 }
