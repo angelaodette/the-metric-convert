@@ -1,0 +1,33 @@
+<section class="home">
+  <div class="home__content">
+    <div class="home__hero">
+      <img class="home__logo" src="assets/logo-dark.svg" alt="The Metric Convert" />
+      <h1>Master the Metric System</h1>
+      <p>Learn metric conversions through interactive practice and step-by-step explanations.</p>
+      
+      <div class="home__actions" *ngIf="!isAuthenticated()">
+        <a routerLink="/login" class="btn btn--primary">Log In</a>
+        <a routerLink="/register" class="btn btn--secondary">Sign Up</a>
+      </div>
+      
+      <div class="home__actions" *ngIf="isAuthenticated()">
+        <a routerLink="/converter" class="btn btn--primary">Start Converting</a>
+      </div>
+    </div>
+
+    <div class="home__features">
+      <div class="feature">
+        <h3>🎯 Interactive Converter</h3>
+        <p>Practice real-time metric and imperial conversions with instant feedback.</p>
+      </div>
+      <div class="feature">
+        <h3>📚 Learn as You Go</h3>
+        <p>Understand the math behind every conversion with detailed step-by-step breakdowns.</p>
+      </div>
+      <div class="feature">
+        <h3>🏆 Track Progress</h3>
+        <p>Save your profile to track your learning journey and revisit your conversions.</p>
+      </div>
+    </div>
+  </div>
+</section>

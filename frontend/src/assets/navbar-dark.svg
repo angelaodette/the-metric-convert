@@ -1,0 +1,26 @@
+<svg width="380" height="52" viewBox="0 0 380 52" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="52" fill="#1A1A2E" rx="8"/>
+  <text font-family="'DM Sans', sans-serif" font-size="9" font-weight="700" fill="#B82020"
+        letter-spacing="0.13em" text-anchor="middle" dominant-baseline="central"
+        transform="translate(9,26) rotate(-90)">THE</text>
+  <text font-family="'Bebas Neue', sans-serif" font-size="28" fill="#F5F0EB" letter-spacing="1.5" x="22" y="38">METRIC</text>
+  <rect x="148" y="10" width="8" height="32" rx="2" fill="#EF9F27"/>
+  <line x1="148" y1="10" x2="156" y2="10" stroke="#1A1A2E" stroke-width="1.2"/>
+  <line x1="148" y1="18" x2="156" y2="18" stroke="#1A1A2E" stroke-width="1.2"/>
+  <line x1="148" y1="26" x2="156" y2="26" stroke="#1A1A2E" stroke-width="1.2"/>
+  <line x1="148" y1="34" x2="156" y2="34" stroke="#1A1A2E" stroke-width="1.2"/>
+  <line x1="148" y1="42" x2="156" y2="42" stroke="#1A1A2E" stroke-width="1.2"/>
+  <line x1="148" y1="14" x2="154" y2="14" stroke="#1A1A2E" stroke-width="0.8"/>
+  <line x1="148" y1="22" x2="154" y2="22" stroke="#1A1A2E" stroke-width="0.8"/>
+  <line x1="148" y1="30" x2="154" y2="30" stroke="#1A1A2E" stroke-width="0.8"/>
+  <line x1="148" y1="38" x2="154" y2="38" stroke="#1A1A2E" stroke-width="0.8"/>
+  <line x1="148" y1="12" x2="151" y2="12" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="16" x2="151" y2="16" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="20" x2="151" y2="20" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="24" x2="151" y2="24" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="28" x2="151" y2="28" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="32" x2="151" y2="32" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="36" x2="151" y2="36" stroke="#1A1A2E" stroke-width="0.6"/>
+  <line x1="148" y1="40" x2="151" y2="40" stroke="#1A1A2E" stroke-width="0.6"/>
+  <text font-family="'Bebas Neue', sans-serif" font-size="28" fill="#B82020" letter-spacing="1.5" x="168" y="38">CONVERT</text>
+</svg>

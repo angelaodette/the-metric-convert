@@ -1,20 +1,31 @@
 using TheMetricConvert.Api;
 using System.Reflection;
 using Microsoft.OpenApi;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
+
+// Add PostgreSQL database context
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Host=localhost;Port=5432;Database=metric_convert;Username=postgres;Password=postgres";
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
+
+// Add authentication service
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "The Metric Convert API",
         Version = "v1",
-        Description = "Learning-friendly metric conversions (units catalog + step-by-step conversions)."
+        Description = "Learning-friendly metric conversions with user authentication (units catalog + step-by-step conversions)."
     });
 
     // Pull XML doc comments into Swagger descriptions.
@@ -27,6 +38,23 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Apply migrations automatically in development
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        try
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "Failed to apply database migrations");
+        }
+    }
+}
 
 app.UseCors(policy =>
 {
@@ -61,6 +89,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+// ====== Utility Endpoints ======
+
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }))
     .WithName("Healthz")
     .WithTags("Utility")
@@ -68,12 +98,98 @@ app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }))
     .WithDescription("Simple liveness endpoint for local development and container probes.")
     .Produces(StatusCodes.Status200OK);
 
+// ====== Auth Endpoints ======
+
+app.MapPost("/api/auth/register", async (IAuthService authService, RegisterRequest request) =>
+    {
+        try
+        {
+            var response = await authService.RegisterAsync(request);
+            return Results.Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(new ErrorResponse { Message = ex.Message, Code = "INVALID_INPUT" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.BadRequest(new ErrorResponse { Message = ex.Message, Code = "USER_EXISTS" });
+        }
+        catch (Exception ex)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    })
+    .WithName("Register")
+    .WithTags("Auth")
+    .WithSummary("Register a new user")
+    .WithDescription("Creates a new user account with email and password.")
+    .Accepts<RegisterRequest>("application/json")
+    .Produces<AuthResponse>(StatusCodes.Status200OK)
+    .Produces<ErrorResponse>(StatusCodes.Status400BadRequest);
+
+app.MapPost("/api/auth/login", async (IAuthService authService, LoginRequest request) =>
+    {
+        try
+        {
+            var response = await authService.LoginAsync(request);
+            return Results.Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(new ErrorResponse { Message = ex.Message, Code = "INVALID_INPUT" });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Results.Unauthorized();
+        }
+        catch (Exception ex)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    })
+    .WithName("Login")
+    .WithTags("Auth")
+    .WithSummary("Log in user")
+    .WithDescription("Authenticates user with email and password, returns JWT access token and refresh token.")
+    .Accepts<LoginRequest>("application/json")
+    .Produces<AuthResponse>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status401Unauthorized);
+
+app.MapPost("/api/auth/refresh", async (IAuthService authService, RefreshTokenRequest request) =>
+    {
+        try
+        {
+            var response = await authService.RefreshAccessTokenAsync(request.RefreshToken);
+            return Results.Ok(response);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Unauthorized();
+        }
+        catch (Exception ex)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    })
+    .WithName("RefreshToken")
+    .WithTags("Auth")
+    .WithSummary("Refresh access token")
+    .WithDescription("Uses a refresh token to obtain a new access token.")
+    .Accepts<RefreshTokenRequest>("application/json")
+    .Produces<AuthResponse>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status401Unauthorized);
+
+// ====== Units Endpoints ======
+
 app.MapGet("/api/units", () => Results.Ok(UnitCatalog.All))
     .WithName("GetUnits")
     .WithTags("Units")
     .WithSummary("List supported units")
     .WithDescription("Returns the unit catalog used by the converter, including metric prefixes where applicable.")
     .Produces<IReadOnlyList<UnitDefinition>>(StatusCodes.Status200OK);
+
+// ====== Conversions Endpoints ======
 
 app.MapPost("/api/conversions", (ConvertRequest request) =>
     {

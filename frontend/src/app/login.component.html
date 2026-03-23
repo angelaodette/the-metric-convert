@@ -1,0 +1,51 @@
+<section class="auth-form">
+  <div class="auth-form__container">
+    <h2>Log In</h2>
+    <p class="auth-form__subtitle">Welcome back! Let's continue your learning journey.</p>
+
+    <form (ngSubmit)="onSubmit()" class="form">
+      <div class="form__group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn--primary btn--block"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Logging in...' : 'Log In' }}
+      </button>
+    </form>
+
+    <p class="auth-form__footer">
+      Don't have an account?
+      <a routerLink="/register">Sign up here</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,76 @@
+<section class="auth-form">
+  <div class="auth-form__container">
+    <h2>Create Account</h2>
+    <p class="auth-form__subtitle">Join The Metric Convert and start learning.</p>
+
+    <form (ngSubmit)="onSubmit()" class="form">
+      <div class="form__group">
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__group">
+        <label for="displayName">Display Name (optional)</label>
+        <input
+          id="displayName"
+          type="text"
+          [(ngModel)]="displayName"
+          name="displayName"
+          placeholder="Your name"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__group">
+        <label for="password">Password *</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="At least 8 characters"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__group">
+        <label for="confirmPassword">Confirm Password *</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="••••••••"
+          required
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form__error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn--primary btn--block"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Creating account...' : 'Sign Up' }}
+      </button>
+    </form>
+
+    <p class="auth-form__footer">
+      Already have an account?
+      <a routerLink="/login">Log in here</a>
+    </p>
+  </div>
+</section>
