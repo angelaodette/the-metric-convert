@@ -54,6 +54,16 @@ if (app.Environment.IsDevelopment())
             app.Logger.LogError(ex, "Failed to apply database migrations");
         }
     }
+
+    // Seed development data
+    try
+    {
+        await SeedData.InitializeAsync(app.Services, app.Configuration);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "Failed to seed development data");
+    }
 }
 
 app.UseCors(policy =>
