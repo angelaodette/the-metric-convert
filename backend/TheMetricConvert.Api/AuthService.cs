@@ -270,7 +270,7 @@ public class AuthService : IAuthService
     {
         var refreshTokenEntity = await _context.RefreshTokens
             .Include(rt => rt.User)
-            .ThenInclude(u => u!.Roles)
+            .ThenInclude(u => u.Roles)
             .FirstOrDefaultAsync<RefreshToken>(rt => rt.Token == refreshToken);
 
         if (refreshTokenEntity == null || refreshTokenEntity.ExpiresAt < DateTime.UtcNow)
@@ -279,9 +279,9 @@ public class AuthService : IAuthService
         }
 
         var user = refreshTokenEntity.User;
-        if (user == null || !user.IsActive)
+        if (!user.IsActive)
         {
-            throw new UnauthorizedAccessException("User not found or inactive.");
+            throw new UnauthorizedAccessException("User is inactive.");
         }
 
         // Generate new access token

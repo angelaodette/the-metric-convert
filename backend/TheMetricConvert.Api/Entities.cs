@@ -75,7 +75,7 @@ public class UserCredential
     public DateTime LastChangedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
 
 /// <summary>
@@ -99,7 +99,7 @@ public class UserRole
     public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
 
 /// <summary>
@@ -131,7 +131,7 @@ public class SocialAuth
     public DateTime LinkedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
 
 /// <summary>
@@ -161,7 +161,7 @@ public class RefreshToken
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
 
 /// <summary>
@@ -191,7 +191,7 @@ public class AuthSession
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
 
 /// <summary>
@@ -225,5 +225,5 @@ public class DeviceToken
     public DateTime? RevokedAt { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }
